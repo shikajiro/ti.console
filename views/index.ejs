@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<meta charset="utf-8">
+<head>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script type="text/javascript" src="http://i18n-translator.googlecode.com/svn/trunk/jquery/jquery.printf.js"></script>
+<script type="text/javascript" src="/js/socket.io.js"></script>
+
+<script type="text/javascript">
+    var socket = io.connect('http://localhost:3000').of('/view');
+	var currentTime = 0;
+    //データ受信ハンドラ
+    socket.on('message', function(message){
+		console.dir(message);
+		var time = new Date(message.time);
+		if(currentTime < time){
+			currentTime = time;
+			var str = $.sprintf("%s [%s] %s",message.time, message.level, message.msg);
+        	$("#show").append(str + '<br>');
+		}
+    });
+    //サーバ切断
+    socket.on('disconnect', function(message){
+        $("#show").append('切断されました');
+    });
+
+	setInterval(function(){
+		socket.emit('request',{
+			time:currentTime,
+		});
+	}, 1000);
+</script>
+</head>
+<body>
+<h1>こんにちは</h1>
+<div id="show"></div>
+</body>
+</html>
