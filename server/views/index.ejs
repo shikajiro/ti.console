@@ -16,7 +16,16 @@
 		if(currentTime < time){
 			currentTime = time;
 			var str = $.sprintf("%s [%s] %s",message.time, message.level, message.msg);
-        	$("#show").append(str + '<br>');
+			var line = $('<div/>');
+			switch(message.level){
+				case 'trace':line.text(str).addClass('trace');break;
+				case 'debug':line.text(str).addClass('debug');break;
+				case 'INFO':line.text(str).addClass('info');break;
+				case 'WARN':line.text(str).addClass('warn');break;
+				case 'error':line.text(str).addClass('error');break;
+			}
+        	$("#show").append(line);
+			window.scroll(0,1000000);
 		}
     });
     //サーバ切断
@@ -29,10 +38,39 @@
 			time:currentTime,
 		});
 	}, 1000);
+	
+	$(function(){
+		$('#clearButton').click(function(e){
+			console.log('log clear');
+			socket.emit('clear', {});
+			$('#show').remove();
+		});
+	});
 </script>
+
+<style type="text/css">
+	.trace {
+		color: black;
+	}
+	.debug {
+		color: black;
+	}
+	.info {
+		color: green;
+	}
+	.warn {
+		color: goldenrod;
+	}
+  	.error {
+		color: red;
+  	}
+
+</style>
+
 </head>
 <body>
-<h1>こんにちは</h1>
+<h1>Titanium Log</h1>
 <div id="show"></div>
+<input type='button' value='clear' id='clearButton'/>
 </body>
 </html>
