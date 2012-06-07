@@ -8,7 +8,7 @@ include
 
 server install
 ---------------
-node.js
+dependent node.js
 * cd ti.console
 * npm install
 * node ti.console
@@ -16,11 +16,11 @@ node.js
 
 client install
 ---------------
-* your Titanium project dir to include "Resources/lib/".
-* server address change your server ipaddress from console.js " var ADDRESS = 'youraddress:3000'"
+* this client directory contents move into your Titanium project directory "Resources/lib/".
+* Please change the server address of your own 'var ADDRESS' that is described in console.js.
 * require('lib/console');
 >
 var console = require('lib/console');
 console.info('message');
 <
-* deveg level is trace,debug,info,warn,and error.
+* debug level is trace,debug,info,warn,and error.
